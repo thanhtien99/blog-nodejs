@@ -1,0 +1,25 @@
+body{
+    background-color: #eee !important;
+}
+/* Hearder */
+header{
+    background-color: #fff;
+}
+header h5{
+    font-weight: bold;
+}
+header h5 img{
+    width: 40px;
+    height: 40px;
+    margin-right: 12px;
+    margin-left: 20px;
+}
+
+/* Footer */
+footer{
+    background-color: #fff;
+}
+footer p{
+    background-color: #fff;
+    margin: 0;
+}
