@@ -1,0 +1,42 @@
+<%- include('../layouts/header'); %>
+
+<h2 class="blog_manager_text">Blog Manager</h2>
+<a href="blogs/create" class="btn btn-outline-dark add-new-blog">Create new blog</a>
+<table class="table">
+    <thead class="thead-dark col-list-table">
+      <tr>
+        <th class="th-id" scope="col">ID</th>
+        <th class="th-title" scope="col">Title</th>
+        <th class="th-image" scope="col">Image</th>
+        <th class="th-contant" scope="col">Contant</th>
+        <th class="th-crday" scope="col">Created At</th>
+        <th class="th-crday" scope="col">Updated At</th>
+        <th class="th-action" scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% blogs.forEach(function(blog){ %>
+      <tr class="blogitem-<%= blog.id %>">
+        <th scope="row"><%= (blog.id).slice(0, 5)+ ((blog.id).length > 5 ? "..." : "") %></th>
+        <td><%= (blog.title).slice(0, 20)+((blog.title).length > 20 ? "..." : "")%></td>
+        <td><img src="<%='/uploads/'+ blog.image %>" alt="" style="width: 50px; height : 50px"></td>
+        <td><%= (blog.content).slice(0, 20)+((blog.content).length > 20 ? "..." : "") %></td>
+        <td><%= blog.createdAt %></td>
+        <td><%= blog.updatedAt %></td>
+        <td class="td-action">
+          <a href="<%='/blogs/edit/'+ blog.id%>" class="btn btn-outline-success"><i class="fa fa-solid fa-pen"></i></button>
+          <a href="<%='/blogs/datail?id='+ blog.id%>" class="btn btn-outline-info"><i class="fa-solid fa-eye"></i></button>
+          <a href="<%='/blogs/delete/'+ blog.id%>" class="btn btn-outline-danger" id="delete_blog" data-blog_id="<%= blog.id %>" data-toggle="modal" data-target="#delete-blog"><i class="fa-solid fa-trash"></i></button>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+</table>
+
+<!-- <script>
+  document.addEventListener("DOMContentLoaded", function(){
+
+    
+  
+</script> -->
+<%- include('../layouts/footer'); %>
