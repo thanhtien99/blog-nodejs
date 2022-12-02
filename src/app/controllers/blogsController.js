@@ -1,4 +1,5 @@
 const Blog = require("../models/Blogs");
+const Users = require("../models/Users");
 
 class BlogsController {
 
@@ -31,7 +32,9 @@ class BlogsController {
     
     update(req, res, next){
         const file = req.file;
-        req.body.image = file ? file.filename : "no-avatar.png";
+        if(file){
+            req.body.image = file.filename;
+        }
         Blog.updateOne({_id: req.params.id}, req.body)
             .then(() => res.redirect('/blogs'))
             .catch(next);

@@ -16,10 +16,10 @@
           <div class="card-body d-flex flex-column align-items-start">
             <strong class="d-inline-block mb-2 text-primary">UserName</strong>
             <h3 class="mb-0">
-              <a class="text-dark" href="#"><%= blog.title %></a>
+              <a class="text-dark text-title-blog" href="<%='/blogs/datail?id='+ blog.id%>"><%= blog.title %></a>
             </h3>
-            <div class="mb-1 text-muted">Nov 12</div>
-            <p class="card-text mb-auto"><%= blog.content %></p>
+            <div class="mb-1 text-muted"><%= blog.createdAt %></div>
+            <p class="card-text mb-auto text-content-blog"><%= blog.content %></p>
             <a href="<%='/blogs/datail?id='+ blog.id%>">Continue reading</a>
           </div>
           <a href="<%='/blogs/datail?id='+ blog.id%>">
