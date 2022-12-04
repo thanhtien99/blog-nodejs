@@ -1,8 +1,5 @@
 const Users = require("../models/Users");
 const bcrypt = require('bcrypt');
-// const app = express();
-// const session = require('express-session');
-
 class UsersController {
 
     index(req, res){

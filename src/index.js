@@ -25,6 +25,10 @@ app.use(express.json());
 app.use(methodOverride('_method'));
 app.use(cookieParser());
 app.use(session({secret: "secret_key"}));
+app.use(function(req, res, next) {
+  user = req.session.user;
+  next();
+});
 
 route(app);
 

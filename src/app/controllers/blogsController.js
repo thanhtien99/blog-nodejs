@@ -4,7 +4,10 @@ const Users = require("../models/Users");
 class BlogsController {
 
     index(req, res, next){
-        Blog.find({})
+        if(req.session.user){
+            var user_id = req.session.user._id;
+        }
+        Blog.find({user_id})
             .then(blogs => res.render('blogs', {blogs}))
             .catch(next);
     }
