@@ -11,6 +11,7 @@ router.get('/datail', blogsController.datail);
 router.get('/edit/:id', middleware.requiresLogin, blogsController.edit);
 router.post('/update/:id', upload.single('image'), blogsController.update);
 router.delete('/delete/:id', blogsController.delete);
+router.put('/like/:id', blogsController.like );
 router.get('/', middleware.requiresLogin, blogsController.index);
 
 module.exports = router;

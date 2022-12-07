@@ -5,7 +5,8 @@ const Blog = new Schema({
   title: { type: String, require: true },
   image: { type: String },
   content: { type: String },
-  user_id: { type: String },
+  users:  { type: Array },
+  likes: [{ type: String }],
 }, {
   timestamps: true,
 });

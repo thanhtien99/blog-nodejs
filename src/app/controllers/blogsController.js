@@ -6,10 +6,10 @@ class BlogsController {
     index(req, res, next){
         if(req.session.user){
             var user_id = req.session.user._id;
-        }
-        Blog.find({user_id})
+            Blog.find({ "users.user_id": user_id})
             .then(blogs => res.render('blogs', {blogs}))
             .catch(next);
+        }
     }
 
     // Create
@@ -21,8 +21,8 @@ class BlogsController {
         const file = req.file;
         req.body.image = file ? file.filename : "no-avatar.png";
         const blog = new Blog(req.body);
-        blog
-            .save()
+        blog.users.push({ user_id :req.body.user_id, username: req.body.username });
+        blog.save()
             .then(() => res.redirect('/blogs'))
             .catch((error) => {});
     }
@@ -58,6 +58,22 @@ class BlogsController {
                 res.render('blogs/datail', {blog});
             })
             .catch(next);
+    }
+
+    //Like
+    like(req, res, next){
+        if(req.session.user){
+            var user_id = req.session.user._id;
+            console.log("_________________",req.user.id);
+            res.send({ type : "success"});
+            
+        }else{
+            res.redirect('/users/login');
+        }
+
+        // Blog.findByIdAndUpdate(req.query.id, {
+        //     $push:{like: req.user._id}
+        // })
     }
 }
 

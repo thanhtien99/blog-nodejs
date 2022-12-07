@@ -101,3 +101,13 @@ footer p {
 .td-action a{
     margin: 3px;
 }
+.blog-pagination{
+    margin-left: 50px;
+}
+.blog-pagination #like {
+    font-size: 27px;
+}
+.blog-pagination #unlike {
+    font-size: 28px;
+    color: #F35369;
+}
