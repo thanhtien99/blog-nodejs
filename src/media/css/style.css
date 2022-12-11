@@ -51,7 +51,7 @@ footer p {
     -webkit-line-clamp: 1;
     line-clamp: 1;
     -webkit-box-orient: vertical;
-    width: 270px;
+    width: 208px;
 }
 /* Blog manager */
 .add-new-blog {
@@ -102,12 +102,13 @@ footer p {
     margin: 3px;
 }
 .blog-pagination{
-    margin-left: 50px;
+    margin-left: 25px;
 }
-.blog-pagination #like {
+.blog-pagination .like_icon {
     font-size: 27px;
+    color: #000;
 }
-.blog-pagination #unlike {
+.blog-pagination .unlike_icon {
     font-size: 28px;
     color: #F35369;
 }

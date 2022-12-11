@@ -48,9 +48,20 @@
       </div><!-- /.blog-post -->
 
       <nav class="blog-pagination">
-        <i class="fa-regular fa-heart" id="like" data-blog_id="<%= blog.id %>"></i>
-        <i class="fa-solid fa-heart hide" id="unlike" data-blog_id="<%= blog.id %>"></i>
-        <h6 style="font-weight: bold; margin-top: 12px">Likes</h6>
+        <!-- Like icon -->
+        <% if(user) { %>
+            <!-- Check user like -->
+            <% if(blog.likes.includes(user._id) == true ) { %>
+              <i class="fa-solid fa-heart unlike_icon" id="unlike" data-blog_id="<%= blog.id %>"></i>
+            <% } else{ %>
+              <i class="fa-regular fa-heart like_icon" id="like" data-blog_id="<%= blog.id %>"></i>
+            <% } %>
+        <% } else{ %>
+          <a href="/users/login" class="like_icon"><i class="fa-regular fa-heart" data-blog_id="<%= blog.id %>"></i></a>
+        <% } %>
+        <!-- Unlike icon -->
+        <i class="fa-solid fa-heart unlike_icon hide" id="unlike" data-blog_id="<%= blog.id %>"></i>
+        <h6 style="font-weight: bold; margin-top: 12px"><%= blog.likes.length %> - Likes</h6>
       </nav>
 
     </div><!-- /.blog-main -->

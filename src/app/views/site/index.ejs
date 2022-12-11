@@ -20,6 +20,7 @@
             </h3>
             <div class="mb-1 text-muted"><%= blog.createdAt %></div>
             <p class="card-text mb-auto text-content-blog"><%= blog.content %></p>
+            <h6 style="font-weight: bold; margin-top: 12px"><%= blog.likes.length %> - Likes</h6>
             <a href="<%='/blogs/datail?id='+ blog.id%>">Continue reading</a>
           </div>
           <a href="<%='/blogs/datail?id='+ blog.id%>">

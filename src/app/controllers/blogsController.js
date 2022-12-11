@@ -61,19 +61,19 @@ class BlogsController {
     }
 
     //Like
-    like(req, res, next){
-        if(req.session.user){
-            var user_id = req.session.user._id;
-            console.log("_________________",req.user.id);
-            res.send({ type : "success"});
-            
-        }else{
-            res.redirect('/users/login');
-        }
-
-        // Blog.findByIdAndUpdate(req.query.id, {
-        //     $push:{like: req.user._id}
-        // })
+    async like(req, res, next){
+        var user_id = req.session.user._id;
+        var test = await Blog.findByIdAndUpdate(req.params.id, {
+            $push:{likes: user_id}
+        }, {new: true})
+        res.send({ type : "success"});
+    }
+    async unlike(req, res, next){
+        var user_id = req.session.user._id;
+        var test = await Blog.findByIdAndUpdate(req.params.id, {
+            $pull:{likes: user_id}
+        }, {new: true})
+        res.send({ type : "success"});
     }
 }
 
