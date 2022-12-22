@@ -101,9 +101,6 @@ footer p {
 .td-action a{
     margin: 3px;
 }
-.blog-pagination{
-    margin-left: 25px;
-}
 .blog-pagination .like_icon {
     font-size: 27px;
     color: #000;
@@ -111,4 +108,37 @@ footer p {
 .blog-pagination .unlike_icon {
     font-size: 28px;
     color: #F35369;
+}
+.mb-10{
+    margin-bottom: 100px;
+}
+.comments_parent{
+    list-style: none;
+    padding-left: 10px;
+    border: 1px #c1c1c1 solid;
+    padding: 15px 25px;
+    border-radius: 10px;
+}
+.comments_child{
+    list-style: none;
+    padding-left: 5px;
+}
+.card-body-comment{
+    padding: 10px 20px;
+}
+.btn-reply{
+    font-size: 14px;
+}
+.border-custum{
+    border-radius: 10px;
+}
+.error404{
+    margin-top: 150px !important;
+}
+.text404{
+    font-family: fredoka one,cursive;
+    font-size: 168px;
+    margin: 0;
+    color: #ff508e;
+    text-transform: uppercase;
 }

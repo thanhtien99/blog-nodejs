@@ -13,6 +13,7 @@ router.post('/update/:id', upload.single('image'), blogsController.update);
 router.delete('/delete/:id', blogsController.delete);
 router.put('/like/:id', blogsController.like);
 router.put('/unlike/:id', blogsController.unlike);
+router.post('/comment/:id', middleware.requiresLogin, blogsController.comments);
 router.get('/', middleware.requiresLogin, blogsController.index);
 
 module.exports = router;

@@ -21,8 +21,8 @@
         <td><%= (blog.title).slice(0, 20)+((blog.title).length > 20 ? "..." : "")%></td>
         <td><img src="<%='/uploads/'+ blog.image %>" alt="" style="width: 50px; height : 50px"></td>
         <td><%= (blog.content).slice(0, 20)+((blog.content).length > 20 ? "..." : "") %></td>
-        <td><%= blog.createdAt %></td>
-        <td><%= blog.updatedAt %></td>
+        <td><%= blog.createdAt.toLocaleString() %></td>
+        <td><%= blog.updatedAt.toLocaleString() %></td>
         <td class="td-action">
           <a href="<%='/blogs/edit/'+ blog.id%>" class="btn btn-outline-success"><i class="fa fa-solid fa-pen"></i></button>
           <a href="<%='/blogs/datail?id='+ blog.id%>" class="btn btn-outline-info"><i class="fa-solid fa-eye"></i></button>

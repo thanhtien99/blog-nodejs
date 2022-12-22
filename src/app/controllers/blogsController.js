@@ -1,5 +1,6 @@
 const Blog = require("../models/Blogs");
 const Users = require("../models/Users");
+const Comments = require("../models/Comments");
 
 class BlogsController {
 
@@ -53,11 +54,15 @@ class BlogsController {
     }
     // Datail
     datail(req, res, next){
-        Blog.findById(req.query.id)
-            .then(blog => {
-                res.render('blogs/datail', {blog});
-            })
-            .catch(next);
+        Blog.findById(req.query.id, function (err, blog) {
+            Comments.find({ "blog_id": req.query.id}, function (err, comments) {
+                if(err){
+                    res.redirect('/users/login');
+                } else {
+                    res.render('blogs/datail', {blog, comments});
+                }
+            });
+        });
     }
 
     //Like
@@ -74,6 +79,17 @@ class BlogsController {
             $pull:{likes: user_id}
         }, {new: true})
         res.send({ type : "success"});
+    }
+    //comments
+    async comments(req, res, next){
+        const comments = new Comments(req.body);
+        comments.blog_id = req.params.id;
+        comments.path = 0;
+        comments.content = req.body.comment_content;
+        comments.users.push({ user_id :req.body.user_id, username: req.body.username });
+        comments.save()
+            .then(() => res.send({ type : "success"}))
+            .catch((error) => {});
     }
 }
 
