@@ -14,6 +14,8 @@ router.delete('/delete/:id', blogsController.delete);
 router.put('/like/:id', blogsController.like);
 router.put('/unlike/:id', blogsController.unlike);
 router.post('/comment/:id', middleware.requiresLogin, blogsController.comments);
+router.post('/replyCmt/:id', middleware.requiresLogin, blogsController.replyComments);
+router.delete('/deleteCmt/:id', blogsController.deleteCmt);
 router.get('/', middleware.requiresLogin, blogsController.index);
 
 module.exports = router;

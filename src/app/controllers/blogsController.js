@@ -55,9 +55,9 @@ class BlogsController {
     // Datail
     datail(req, res, next){
         Blog.findById(req.query.id, function (err, blog) {
-            Comments.find({ "blog_id": req.query.id}, function (err, comments) {
+            Comments.find({ "blog_id": req.query.id, "path" : 0 }, function (err, comments) {
                 if(err){
-                    res.redirect('/users/login');
+                    res.redirect('/error404');
                 } else {
                     res.render('blogs/datail', {blog, comments});
                 }
@@ -88,9 +88,29 @@ class BlogsController {
         comments.content = req.body.comment_content;
         comments.users.push({ user_id :req.body.user_id, username: req.body.username });
         comments.save()
-            .then(() => res.send({ type : "success"}))
+            .then(() => res.send({ type : "success", commentID : comments._id}))
             .catch((error) => {});
     }
+    // Reply comments
+    async replyComments(req, res, next){
+        const comments = new Comments(req.body);
+        comments.blog_id = req.body.blog_id;
+        comments.path = req.params.id;
+        comments.content = req.body.comment_content;
+        comments.users.push({ user_id :req.body.user_id, username: req.body.username });
+        comments.save()
+            .then(() => res.send({ type : "success", commentID : comments._id}))
+            .catch((error) => {});
+    }
+    // Delete Comments
+    deleteCmt(req, res, next){
+        Comments.deleteOne({_id: req.params.id})
+        .then(()=> {
+            res.send({ type : "success"});
+        })
+        .catch(next);
+    }
+
 }
 
 module.exports = new BlogsController;

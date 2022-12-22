@@ -101,6 +101,9 @@ footer p {
 .td-action a{
     margin: 3px;
 }
+.blog-pagination{
+    display: flex;
+}
 .blog-pagination .like_icon {
     font-size: 27px;
     color: #000;
