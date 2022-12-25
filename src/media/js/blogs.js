@@ -70,26 +70,31 @@ $(document).ready(function(){
           }).done(data => {
               if (data.type == 'success') {
                  listCmt.prepend(`<ul class="comments_parent commentID-`+ data.commentID +`">
-                    <li>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <h6 class="font-weight-bold text-danger mb-1">`+ username +`</h6>
-                        <p class="text-muted small mb-0"></p>
-                    </div>
-                    <p class="mt-3 mb-4 pb-2">`+ comment_content +`</p>
-                    <!-- Reply comment -->
-                    <div class="d-flex justify-content-end action-reply">
-                        <div class="small d-flex mr-4">
-                            <a path="<?php echo $this->commentData[$i]['path']; ?>" class="btn-reply d-flex align-items-center me-3 text-primary">
-                            <i class="far fa-comment-dots mr-1"></i> Reply</a>
+                    <li> 
+                    <div class="action-`+ data.commentID +`">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h6 class="font-weight-bold text-danger mb-1">`+ username +`</h6>
+                            <p class="text-muted small mb-0"></p>
                         </div>
-                        <!-- Delete Comment -->
-                        <div class="small d-flex d mr-4">
-                        <a id="delete_cmt" class="btn-reply d-flex align-items-center me-3 text-primary" data-cmt_id="`+ data.commentID +`">
-                            <i class="fa-solid fa-trash"></i> Delete</a>
+                        <p class="mt-3 mb-4 pb-2">`+ comment_content +`</p>
+                        <!-- Reply comment -->
+                        <div class="d-flex justify-content-end action-reply">
+                            <div class="small d-flex mr-4">
+                                <a href="#" id="show_reply_cmt" class="btn-reply d-flex align-items-center me-3 text-primary" data-cmt_id="`+ data.commentID +`"
+                                data-blog_id="`+ blog_id +`" data-user_id="`+ user_id +`" data-username="`+ username +`">
+                                <i class="far fa-comment-dots mr-1"></i> Reply</a>
+                            </div>
+                            <!-- Delete Comment -->
+                            <div class="small d-flex d mr-4">
+                            <a id="delete_cmt" class="btn-reply d-flex align-items-center me-3 text-primary" data-cmt_id="`+ data.commentID +`"
+                            data-cmt_path="`+ data.commentPath +`">
+                                <i class="fa-solid fa-trash"></i> Delete</a>
+                            </div>
                         </div>
                     </div>
-        
                     <hr class="hr1">
+                    <div class="list_comments_child-`+ data.commentID +`">
+                    </div>
                     </li>
                </ul>`);
                $('.text-no-comment').addClass('hide');
@@ -141,7 +146,7 @@ $(document).ready(function(){
               data : { user_id : user_id, username: username, comment_content: comment_content, blog_id : blog_id},
           }).done(data => {
               if (data.type == 'success') {
-                 listCmt.prepend(`<ul class="comments_child">
+                 listCmt.prepend(`<ul class="comments_child commentID-`+ data.commentID +`">
                     <li>
                     <div class="card-body-comment reply_comment mar-l">
                         <div class="d-flex align-items-center justify-content-between">
@@ -149,6 +154,14 @@ $(document).ready(function(){
                         <p class="text-muted small mb-0">today</p>
                         </div>
                         <p class="mt-3 mb-4 pb-2">`+ comment_content +`</p>
+                        <div class="d-flex justify-content-end">
+                            <!-- Delete Comment -->
+                            <div class="small d-flex d mr-4">
+                                <a href="#" id="delete_cmt" class="btn-reply d-flex align-items-center me-3 text-primary" data-cmt_id="`+ data.commentID +`"
+                                data-cmt_path="`+ data.commentPath +`">
+                                <i class="fa-solid fa-trash"></i> Delete</a>
+                            </div>
+                        </div>
                         <hr>
                     </div>
                     </li>
@@ -164,12 +177,14 @@ $(document).ready(function(){
         e.stopPropagation();
         e.preventDefault();
         var comment_id = $(this).data('cmt_id');
+        var comment_path = $(this).data('cmt_path')
         var cf = confirm("Are you sure!");
         if (cf == true) {
           $.ajax({
               type: "DELETE",
               url: '/blogs/deleteCmt/' + comment_id,
               dataType: 'json',
+              data : { comment_path : comment_path},
           }).done(data => {
               if (data.type == 'success') {
                   $('.commentID-'+comment_id).remove();

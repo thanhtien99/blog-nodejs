@@ -122,7 +122,7 @@
           <% comments.forEach(function(comment){ %>
           <ul class="comments_parent commentID-<%= comment._id %>">
             <li>
-              <div class="action-<%= comment._id %>"">
+              <div class="action-<%= comment._id %>">
                 <div class="d-flex align-items-center justify-content-between">
                   <h6 class="font-weight-bold text-danger mb-1"><%= comment.users[0].username %></h6>
                   <p class="text-muted small mb-0"><%= (comment.createdAt).toLocaleString() %></p>
@@ -144,7 +144,8 @@
                     <!-- Delete Comment -->
                     <% if (user._id == comment.users[0].user_id) { %>
                       <div class="small d-flex d mr-4">
-                        <a href="#" id="delete_cmt" class="btn-reply d-flex align-items-center me-3 text-primary" data-cmt_id="<%= comment._id %>">
+                        <a href="#" id="delete_cmt" class="btn-reply d-flex align-items-center me-3 text-primary" data-cmt_id="<%= comment._id %>"
+                          data-cmt_path="<%= comment.path %>">
                           <i class="fa-solid fa-trash"></i> Delete</a>
                       </div>
                     <% } %>
@@ -156,18 +157,34 @@
 
               <!-- List Comment Child -->
               <div class="list_comments_child-<%= comment._id %>">
-                <!-- <ul class="comments_child">
-                  <li>
-                    <div class="card-body-comment reply_comment mar-l">
-                      <div class="d-flex align-items-center justify-content-between">
-                        <h6 class="font-weight-bold text-primary mb-1">username</h6>
-                        <p class="text-muted small mb-0">12323565</p>
-                      </div>
-                      <p class="mt-3 mb-4 pb-2">text comment here ....</p>
-                      <hr>
-                    </div>
-                  </li>
-                </ul> -->
+                <% if(comment.child) { %>
+                  <% comment.child.forEach(function(child_comment){ %>
+                    <ul class="comments_child commentID-<%= child_comment._id %>">
+                      <li>
+                        <div class="card-body-comment reply_comment mar-l">
+                          <div class="d-flex align-items-center justify-content-between">
+                            <h6 class="font-weight-bold text-primary mb-1"><%= child_comment.users[0].username %></h6>
+                            <p class="text-muted small mb-0"><%= (child_comment.createdAt).toLocaleString() %></p>
+                          </div>
+                          <p class="mt-3 mb-4 pb-2"><%= child_comment.content %></p>
+                          <% if (user) { %>
+                            <% if (user._id == child_comment.users[0].user_id) { %>
+                              <div class="d-flex justify-content-end">
+                                <!-- Delete Comment -->
+                                <div class="small d-flex d mr-4">
+                                    <a href="#" id="delete_cmt" class="btn-reply d-flex align-items-center me-3 text-primary" data-cmt_id="<%= child_comment._id %>"
+                                      data-cmt_path="<%= child_comment.path %>">
+                                    <i class="fa-solid fa-trash"></i> Delete</a>
+                                </div>
+                              </div>
+                            <% } %>
+                          <% } %>
+                          <hr>
+                        </div>
+                      </li>
+                    </ul>
+                  <% });%>
+                <% } %>
               </div>
             </li>
           </ul>

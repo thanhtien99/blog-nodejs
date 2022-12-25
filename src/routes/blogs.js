@@ -7,7 +7,7 @@ const upload = multer({ dest: './src/media/uploads/' })
 
 router.get('/create', middleware.requiresLogin, blogsController.create);
 router.post('/store', upload.single('image'), blogsController.store);
-router.get('/datail', blogsController.datail);
+router.get('/datail', blogsController.detail);
 router.get('/edit/:id', middleware.requiresLogin, blogsController.edit);
 router.post('/update/:id', upload.single('image'), blogsController.update);
 router.delete('/delete/:id', blogsController.delete);

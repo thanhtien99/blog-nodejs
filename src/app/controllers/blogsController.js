@@ -52,16 +52,13 @@ class BlogsController {
         })
         .catch(next);
     }
-    // Datail
-    datail(req, res, next){
-        Blog.findById(req.query.id, function (err, blog) {
-            Comments.find({ "blog_id": req.query.id, "path" : 0 }, function (err, comments) {
-                if(err){
-                    res.redirect('/error404');
-                } else {
-                    res.render('blogs/datail', {blog, comments});
-                }
-            });
+    // Detail
+    detail(req, res, next){
+        const blog = Blog.findById(req.query.id);
+        const comments = Comments.find({ "blog": req.query.id});
+        Promise.all([blog, comments]).then((values) => {
+            const format = parent_childs(values[1]);
+            res.render('blogs/datail', {blog: values[0], comments : format});
         });
     }
 
@@ -83,34 +80,73 @@ class BlogsController {
     //comments
     async comments(req, res, next){
         const comments = new Comments(req.body);
-        comments.blog_id = req.params.id;
+        comments.blog = req.params.id;
         comments.path = 0;
         comments.content = req.body.comment_content;
         comments.users.push({ user_id :req.body.user_id, username: req.body.username });
         comments.save()
-            .then(() => res.send({ type : "success", commentID : comments._id}))
+            .then(() => res.send({ type : "success", commentID : comments._id, commentPath: comments.path}))
             .catch((error) => {});
     }
     // Reply comments
     async replyComments(req, res, next){
         const comments = new Comments(req.body);
-        comments.blog_id = req.body.blog_id;
+        comments.blog = req.body.blog_id;
         comments.path = req.params.id;
         comments.content = req.body.comment_content;
         comments.users.push({ user_id :req.body.user_id, username: req.body.username });
         comments.save()
-            .then(() => res.send({ type : "success", commentID : comments._id}))
+            .then(() => res.send({ type : "success", commentID : comments._id, commentPath: comments.path}))
             .catch((error) => {});
     }
     // Delete Comments
     deleteCmt(req, res, next){
-        Comments.deleteOne({_id: req.params.id})
-        .then(()=> {
-            res.send({ type : "success"});
-        })
-        .catch(next);
+        if(req.body.comment_path == 0 ){
+            var deleteAllChild = Comments.deleteMany({path: req.params.id});
+            var deletePerent = Comments.deleteOne({_id: req.params.id});
+            Promise.all([deleteAllChild, deletePerent]).then(() => {
+                res.send({ type : "success"});
+            });
+        } else {
+            Comments.deleteOne({_id: req.params.id})
+            .then(()=> {
+                res.send({ type : "success"});
+            })
+            .catch(next);
+        }
     }
 
+}
+
+const parent_childs = (comments) => {
+    // get parent first.
+    var result = comments.filter(e => !e.path || e.path == 0)
+    for(let comment of comments) {
+        if(comment.path == 0 || !comment.path) continue;
+        result.forEach(parent => {
+            if(!parent.child) {
+                parent.child = [];
+            };
+            if(parent._id.toString() == comment.path) {
+                parent.child.push(comment);
+            };
+        })
+    }
+    return result;
+   // let new_comments = [...comments];
+    // var parents = new_comments.filter(e => !e.path || e.path == 0);
+    // for(let comment of new_comments) {
+    //     if(comment.path == 0 || !comment.path) continue;
+    //     var result = parents.map(parent => {
+    //         if(!parent.child) parent.child = []
+    //         if(parent._id.toString() == comment.path) {
+    //             parent.child.push(comment);
+    //         }
+    //         return parent;
+    //     })
+    // }
+    // console.log("TEST", result);
+    // return result;
 }
 
 module.exports = new BlogsController;
