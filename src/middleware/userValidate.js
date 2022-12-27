@@ -2,7 +2,7 @@ function requiresLogin(req, res, next) {
     if (req.session && req.session.user) {
       return next();
     } else {
-        res.redirect('/users/login');
+      res.redirect('/users/login');
     }
 }
 

@@ -27,6 +27,7 @@ class BlogsController {
             .then(() => res.redirect('/blogs'))
             .catch((error) => {});
     }
+
     //Edit
     edit(req, res, next){
         Blog.findById(req.params.id)
@@ -52,10 +53,11 @@ class BlogsController {
         })
         .catch(next);
     }
+
     // Detail
     detail(req, res, next){
         const blog = Blog.findById(req.query.id);
-        const comments = Comments.find({ "blog": req.query.id});
+        const comments = Comments.find({ "blog": req.query.id}).sort({ createdAt: -1 });
         Promise.all([blog, comments]).then((values) => {
             const format = parent_childs(values[1]);
             res.render('blogs/datail', {blog: values[0], comments : format});
@@ -70,6 +72,7 @@ class BlogsController {
         }, {new: true})
         res.send({ type : "success"});
     }
+
     async unlike(req, res, next){
         var user_id = req.session.user._id;
         var test = await Blog.findByIdAndUpdate(req.params.id, {
@@ -77,6 +80,7 @@ class BlogsController {
         }, {new: true})
         res.send({ type : "success"});
     }
+
     //comments
     async comments(req, res, next){
         const comments = new Comments(req.body);
@@ -88,6 +92,7 @@ class BlogsController {
             .then(() => res.send({ type : "success", commentID : comments._id, commentPath: comments.path}))
             .catch((error) => {});
     }
+
     // Reply comments
     async replyComments(req, res, next){
         const comments = new Comments(req.body);
@@ -99,6 +104,7 @@ class BlogsController {
             .then(() => res.send({ type : "success", commentID : comments._id, commentPath: comments.path}))
             .catch((error) => {});
     }
+    
     // Delete Comments
     deleteCmt(req, res, next){
         if(req.body.comment_path == 0 ){
@@ -118,34 +124,38 @@ class BlogsController {
 
 }
 
-const parent_childs = (comments) => {
+const parent_childs = (comments, parent_id) => {
     // get parent first.
-    var result = comments.filter(e => !e.path || e.path == 0)
-    for(let comment of comments) {
-        if(comment.path == 0 || !comment.path) continue;
-        result.forEach(parent => {
-            if(!parent.child) {
-                parent.child = [];
-            };
-            if(parent._id.toString() == comment.path) {
-                parent.child.push(comment);
-            };
-        })
-    }
+    //C1
+    var result = []
+    var child = [];
+    result = comments.filter(e => {
+        if(!parent_id) return !e.path || e.path == 0;
+        return e.path == parent_id
+    })
+    console.log("+++++++", result);
+    if(result.lenght == 0) return;
+    result.map(parent_cmt => {
+        child = parent_childs(comments, parent_cmt._id.toString())
+        parent_cmt.child = child;
+        return parent_cmt
+    })
+    console.log("----------------", result);
     return result;
-   // let new_comments = [...comments];
-    // var parents = new_comments.filter(e => !e.path || e.path == 0);
-    // for(let comment of new_comments) {
+
+    // C1
+    // var result = comments.filter(e => !e.path || e.path == 0)
+    // for(let comment of comments) {
     //     if(comment.path == 0 || !comment.path) continue;
-    //     var result = parents.map(parent => {
-    //         if(!parent.child) parent.child = []
+    //     result.forEach(parent => {
+    //         if(!parent.child) {
+    //             parent.child = [];
+    //         };
     //         if(parent._id.toString() == comment.path) {
     //             parent.child.push(comment);
-    //         }
-    //         return parent;
+    //         };
     //     })
     // }
-    // console.log("TEST", result);
     // return result;
 }
 

@@ -5,25 +5,27 @@ class UsersController {
     index(req, res){
         res.render('users/index');
     }
-    login(req,res, next) {
 
+    login(req,res, next) {
        res.render('users/login');
     }
-    register(req,res, next) {
 
+    register(req,res, next) {
         res.render('users/register');
     }
+
     async create(req,res, next) {
-            try{
-                req.body.password = await bcrypt.hash(req.body.password, 10)
-                const user = new Users(req.body);
-                await user.save();
-                res.send({ type : "success"});
-            } catch{
-                res.redirect('/users/register')
-            }
-      
+        try{
+            req.body.password = await bcrypt.hash(req.body.password, 10)
+            const user = new Users(req.body);
+            await user.save();
+            res.send({ type : "success"});
+        } catch{
+            res.send({ type : "error"});
+            // res.redirect('/users/register');
+        }
     }
+    
     loginPost(req,res, next) {
         Users.findOne({email: req.body.email}).exec(function(err, user){
             if(err) {
@@ -41,6 +43,7 @@ class UsersController {
             })
         })
     }
+    
     logout(req, res){
         if (req.session) {
             // delete session object

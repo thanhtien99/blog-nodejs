@@ -21,9 +21,10 @@ $(document).ready(function(){
             }).done(data => {
                 if (data.type == 'success') {
                     window.location.href = '/users/login';
+                } else {
+                    alert("Email already in use !");
                 }
             });
         }
     });
-
 });

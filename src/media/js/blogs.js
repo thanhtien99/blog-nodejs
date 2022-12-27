@@ -36,6 +36,7 @@ $(document).ready(function(){
               }
           });
     });
+    
     //unlike
     $(document).on('click', '#unlike', function(e) {
         e.stopPropagation();
@@ -130,8 +131,9 @@ $(document).ready(function(){
             </div>`);
         }
     });
-       //Reply Comments
-       $(document).on('click', '#btn_comment_reply', function(e) {
+       
+    //Reply Comments
+    $(document).on('click', '#btn_comment_reply', function(e) {
         e.stopPropagation();
         var blog_id = $(this).data('blog_id');
         var comment_id = $(this).data('comment_id');

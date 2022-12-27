@@ -7,6 +7,7 @@ class SiteController {
         .then(blogs => res.render('site', {blogs}))
         .catch(next);    
     }
+    
     error404(req,res, next){
         res.render('site/error404');
     }
