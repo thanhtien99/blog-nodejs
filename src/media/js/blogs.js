@@ -23,6 +23,7 @@ $(document).ready(function(){
     $(document).on('click', '#like', function(e) {
         e.stopPropagation();
         var blog_id = $(this).data('blog_id');
+        var count_likes = $('#count_likes').data('count_likes');
           $.ajax({
               type: "PUT",
               url: '/blogs/like/' + blog_id,
@@ -31,6 +32,10 @@ $(document).ready(function(){
               if (data.type == 'success') {
                   $(this).addClass('hide');
                   $('#unlike').removeClass('hide');
+                  //update count likes
+                  count_like = count_likes + 1;
+                  $('#count_likes').data('count_likes', count_like);
+                  $('#count_likes').text(count_like);
               }else{
                 alert('Wrong!');
               }
@@ -41,6 +46,7 @@ $(document).ready(function(){
     $(document).on('click', '#unlike', function(e) {
         e.stopPropagation();
         var blog_id = $(this).data('blog_id');
+        var count_likes = $('#count_likes').data('count_likes');
           $.ajax({
               type: "PUT",
               url: '/blogs/unlike/' + blog_id,
@@ -48,7 +54,11 @@ $(document).ready(function(){
           }).done(data => {
               if (data.type == 'success') {
                   $(this).addClass('hide');
-                  $('.blog-pagination').prepend('<i class="fa-regular fa-heart like_icon con cac" id="like" data-blog_id=' + blog_id + '></i>');
+                  $('.blog-pagination').prepend('<i class="fa-regular fa-heart like_icon con" id="like" data-blog_id=' + blog_id + '></i>');
+                  //update count likes
+                  count_like = count_likes - 1;
+                  $('#count_likes').data('count_likes', count_like);
+                  $('#count_likes').text(count_like);
               }else{
                 alert('Wrong!');
               }
@@ -63,6 +73,7 @@ $(document).ready(function(){
         var user_id = $(this).data('user_id');
         var username = $(this).data('username');
         var comment_content = $('.comment_content').val();
+        var count_cmt = $('#count_cmt').data('count_cmt');
           $.ajax({
               type: "POST",
               url: '/blogs/comment/' + blog_id,
@@ -99,6 +110,10 @@ $(document).ready(function(){
                     </li>
                </ul>`);
                $('.text-no-comment').addClass('hide');
+               //update count comments
+               count_comment = count_cmt + 1;
+               $('#count_cmt').data('count_cmt', count_comment);
+               $('#count_cmt').text(count_comment + " Comments");
               }else{
                 alert('Wrong!');
               }
@@ -181,6 +196,7 @@ $(document).ready(function(){
         var comment_id = $(this).data('cmt_id');
         var comment_path = $(this).data('cmt_path')
         var cf = confirm("Are you sure!");
+        var count_cmt = $('#count_cmt').data('count_cmt');
         if (cf == true) {
           $.ajax({
               type: "DELETE",
@@ -190,6 +206,10 @@ $(document).ready(function(){
           }).done(data => {
               if (data.type == 'success') {
                   $('.commentID-'+comment_id).remove();
+                  //update count comments
+                  count_comment = count_cmt - 1;
+                  $('#count_cmt').data('count_cmt', count_comment);
+                  $('#count_cmt').text(count_comment + " Comments");
               }else{
                 alert('Wrong!');
               }

@@ -78,7 +78,9 @@ footer p {
     object-fit: contain; */
     max-width: 100%;
 }
-
+.card-image{
+    object-fit: cover;
+}
 .col-list-table tr {
     width: 100%;
 }

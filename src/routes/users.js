@@ -9,7 +9,8 @@ const upload = multer({ dest: './src/media/uploads/' })
 router.get('/login', usersController.login);
 router.post('/login', usersController.loginPost);
 router.get('/register', usersController.register);
-router.post('/create', usersController.create);
+router.post('/register', usersController.create);
+// router.post('/create', usersController.create);
 router.get('/logout', usersController.logout);
 router.get('/', usersController.index);
 

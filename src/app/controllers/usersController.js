@@ -16,13 +16,20 @@ class UsersController {
 
     async create(req,res, next) {
         try{
-            req.body.password = await bcrypt.hash(req.body.password, 10)
-            const user = new Users(req.body);
-            await user.save();
-            res.send({ type : "success"});
+            if(req.body.username == "" || req.body.email == "" || req.body.password == ""|| req.body.repassword == ""){
+                res.render('users/register', {errRegister : 'Your information is incomplete!'});
+            }else if(req.body.repassword != req.body.password){
+                res.render('users/register', {errRegister : 'Repassword does not match!'});
+            }else{
+                req.body.password = await bcrypt.hash(req.body.password, 10);
+                const user = new Users(req.body);
+                await user.save();
+                // res.send({ type : "success"});
+                res.redirect('/users/login');
+            }
         } catch{
-            res.send({ type : "error"});
-            // res.redirect('/users/register');
+            // res.send({ type : "error"});
+            res.render('users/register', {errRegister : 'Email already in use!'})
         }
     }
     
@@ -38,7 +45,7 @@ class UsersController {
                     req.session.user = user;
                     res.redirect('/')
                 }else{
-                    return res.json({err: 'Username and Password are incorrect'})
+                    return res.render('users/login', {errlogin : 'Username and Password are incorrect'})
                 }
             })
         })

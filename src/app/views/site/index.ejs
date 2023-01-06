@@ -23,12 +23,14 @@
             <h6 style="font-weight: bold; margin-top: 12px"><%= blog.likes.length %> - Likes</h6>
             <a href="<%='/blogs/datail?id='+ blog.id%>">Continue reading</a>
           </div>
-          <a href="<%='/blogs/datail?id='+ blog.id%>">
-            <img class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/200x250?theme=thumb"
-            alt="Thumbnail [200x250]" style="width: 200px; height: 250px; border-top-right-radius: 12px; border-bottom-right-radius: 12px;"
-            src="<%='uploads/' + blog.image %>"
-            data-holder-rendered="true">
-          </a>
+          <div>
+            <a href="<%='/blogs/datail?id='+ blog.id%>">
+              <img class="card-img-right flex-auto d-none d-md-block card-image" data-src="holder.js/200x250?theme=thumb"
+              alt="Thumbnail [200x250]" style="width: 200px; height: 250px; border-top-right-radius: 12px; border-bottom-right-radius: 12px;"
+              src="<%='uploads/' + blog.image %>"
+              data-holder-rendered="true">
+            </a>
+          </div>
         </div>
       </div>
     <% }); %>

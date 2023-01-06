@@ -61,17 +61,17 @@
         <% if(user) { %>
           <!-- Check user like -->
           <% if(blog.likes.includes(user._id)==true ) { %>
-            <i class="fa-solid fa-heart unlike_icon" id="unlike" data-blog_id="<%= blog.id %>"></i>
+            <i class="fa-solid fa-heart unlike_icon" id="unlike" data-blog_id="<%= blog.id %>" data-user_id="<%= user._id %>"></i>
           <% } else{ %>
-            <i class="fa-regular fa-heart like_icon" id="like" data-blog_id="<%= blog.id %>"></i>
+            <i class="fa-regular fa-heart like_icon" id="like" data-blog_id="<%= blog.id %>" data-user_id="<%= user._id %>"></i>
           <% } %>
         <% } else{ %>
-          <a href="/users/login" class="like_icon"><i class="fa-regular fa-heart"
-              data-blog_id="<%= blog.id %>"></i></a>
+          <i id="like_login" class="fa-regular fa-heart like_icon" type="button" data-toggle="modal" data-target="#exampleModal"
+          data-blog_id="<%= blog.id %>" data-user_id="<%= typeof user !== 'undefined' ? user : 0 %>"></i>
         <% } %>
           <!-- Unlike icon -->
-          <i class="fa-solid fa-heart unlike_icon hide" id="unlike" data-blog_id="<%= blog.id %>"></i>
-          <h6 style="font-weight: bold; margin-top: 9px; margin-left: 12px;">
+          <i class="fa-solid fa-heart unlike_icon hide" id="unlike" data-blog_id="<%= blog.id %>" data-user_id="<%= typeof user !== 'undefined' ? user : 0 %>"></i>
+          <h6 style="font-weight: bold; margin-top: 4px; margin-left: 12px;" id="count_likes" data-count_likes="<%= blog.likes.length %>">
             <%= blog.likes.length %>
           </h6>
       </nav>
@@ -93,7 +93,7 @@
                       </div>
                     </div>
                     <div class="float-end mt-2 pt-1">
-                      <a href="/users/login" class="btn-comment btn btn-outline-dark btn-sm">Post comment</a>
+                      <button type="button" class="btn-comment btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#exampleModal">Post comment</button>
                     </div>
                   <% } else { %>
                     <div class="flex-start w-100">
@@ -116,7 +116,7 @@
 
       <!-- List Comment -->
       <div class="comment_list">
-        <h4><%= comments.length %> Comments</h4>
+        <h4 id="count_cmt" data-count_cmt="<%= comments.length %>"><%= comments.length %> Comments</h4>
         <div class="card-body border bg-white mb-10 border-custum" id="list_comments">
           <% if(comments.length >= 1) { %>
           <% comments.forEach(function(comment){ %>
@@ -131,7 +131,7 @@
                 <!-- Reply comment -->
                 <% if (!user) { %>
                   <div class="small d-flex justify-content-end mr-4">
-                    <a href="/users/login" class="btn-reply d-flex align-items-center me-3 text-primary">
+                    <a href="#" type="button" class="btn-reply d-flex align-items-center me-3 text-primary" data-toggle="modal" data-target="#exampleModal">
                       <i class="far fa-comment-dots mr-1"></i> Reply</a>
                   </div>
                 <% } else { %>
@@ -192,6 +192,27 @@
           <% } else { %>
             <p class="text-no-comment">There are no comments yet.....</p>
           <% } %>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Notification</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              You are not logged in, please login !
+            </div>
+            <div class="modal-footer">
+              <a href="/users/login" type="button" class="btn btn-primary">Move to login page</a>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
         </div>
       </div>
 

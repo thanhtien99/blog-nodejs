@@ -133,14 +133,12 @@ const parent_childs = (comments, parent_id) => {
         if(!parent_id) return !e.path || e.path == 0;
         return e.path == parent_id
     })
-    console.log("+++++++", result);
     if(result.lenght == 0) return;
     result.map(parent_cmt => {
         child = parent_childs(comments, parent_cmt._id.toString())
         parent_cmt.child = child;
         return parent_cmt
     })
-    console.log("----------------", result);
     return result;
 
     // C1
